@@ -38,11 +38,33 @@ MongoClient.connect(config.database, (err, db) => {
 	/* 
 	* Get Count all data
 	*/
-	dbData.collection('Users').find().count().then((count) => {
-		console.log(`Total User: ${count}`);
-	}, (err) => {
-		console.log('Unable to fecth users', err);
-	});
+	// dbData.collection('Users').find().count().then((count) => {
+	// 	console.log(`Total User: ${count}`);
+	// }, (err) => {
+	// 	console.log('Unable to fecth users', err);
+	// });
+
+
+	/*
+	* DeleteMany
+	*/
+	// dbData.collection('Users').deleteMany({ name: 'David' }).then((result) => {
+	// 	console.log(result);
+	// });
+
+	/*
+	* DeleteOne
+	*/
+	// dbData.collection('Users').deleteOne({ name: 'David' }).then((result) => {
+	// 	console.log(result);
+	// });
+
+	/*
+	* FindOneAndDelete
+	*/
+	// dbData.collection('Users').FindOneAndDelete({ location: 'Phnom Penh' }).then((result) => {
+	// 	console.log(result);
+	// });
 
 	// db.close();
 });
