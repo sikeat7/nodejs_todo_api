@@ -7,18 +7,18 @@ const config = require('./config/config');
 var obj = new ObjectID();
 console.log(obj);
 
-MongoClient.connect(config.database, (err, db) => {
+MongoClient.connect(config.database, (err, client) => {
 	if(err){
 		return console.log('Unable to connect to Mongo Database!');
 	}
 	console.log('Connected to Mongo Server');
 
-	const dbData = db.db(config.databaseName);
+	const db = client.db(config.databaseName);
 
 	/* 
 	* Fetch All Data with Array 
 	*/
-	// dbData.collection('Users').find().toArray().then((count) => {
+	// db.collection('Users').find().toArray().then((count) => {
 	// 	console.log('Users');
 	// 	console.log(JSON.stringify(docs, undefined, 2));
 	// }, (err) => {
@@ -28,7 +28,7 @@ MongoClient.connect(config.database, (err, db) => {
 	/* 
 	* Fetch All Data with Array With Conditino
 	*/
-	// dbData.collection('Users').find({ _id: new ObjectID('5ad60647819ea46b84bc1d0e') }).toArray().then((count) => {
+	// db.collection('Users').find({ _id: new ObjectID('5ad60647819ea46b84bc1d0e') }).toArray().then((count) => {
 	// 	console.log('Users');
 	// 	console.log(JSON.stringify(docs, undefined, 2));
 	// }, (err) => {
@@ -38,7 +38,7 @@ MongoClient.connect(config.database, (err, db) => {
 	/* 
 	* Get Count all data
 	*/
-	// dbData.collection('Users').find().count().then((count) => {
+	// db.collection('Users').find().count().then((count) => {
 	// 	console.log(`Total User: ${count}`);
 	// }, (err) => {
 	// 	console.log('Unable to fecth users', err);
@@ -48,24 +48,41 @@ MongoClient.connect(config.database, (err, db) => {
 	/*
 	* DeleteMany
 	*/
-	// dbData.collection('Users').deleteMany({ name: 'David' }).then((result) => {
+	// db.collection('Users').deleteMany({ name: 'David' }).then((result) => {
 	// 	console.log(result);
 	// });
 
 	/*
 	* DeleteOne
 	*/
-	// dbData.collection('Users').deleteOne({ name: 'David' }).then((result) => {
+	// db.collection('Users').deleteOne({ name: 'David' }).then((result) => {
 	// 	console.log(result);
 	// });
 
 	/*
 	* FindOneAndDelete
 	*/
-	// dbData.collection('Users').FindOneAndDelete({ location: 'Phnom Penh' }).then((result) => {
+	// db.collection('Users').FindOneAndDelete({ location: 'Phnom Penh' }).then((result) => {
 	// 	console.log(result);
 	// });
 
-	// db.close();
+
+	/*
+	* Update User
+	*/
+	db.collection('Users').findOneAndUpdate({
+		name: 'Johny'
+	},{
+		$set: {
+			location: 'United State'
+		},
+		$inc: {
+			age: -3
+		}
+	}).then((result) => {
+		console.log(result);
+	});
+
+	// client.close();
 });
 
