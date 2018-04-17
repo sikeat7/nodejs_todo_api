@@ -66,7 +66,6 @@ MongoClient.connect(config.database, (err, client) => {
 	// 	console.log(result);
 	// });
 
-
 	/*
 	* Update User
 	*/
