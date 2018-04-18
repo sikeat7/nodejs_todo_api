@@ -57,8 +57,8 @@ var AddressBookSchema = mongoose.model('AddressBook', {
 
 var addressBook = new AddressBookSchema({
 	name: 'Sikeat',
-	phone: '+855962521009',
-	email: 'kobsikeat@outlook.com'
+	phone: '+xxx xxx xxx',
+	email: 'demo@gmail.com'
 });
 
 addressBook.save().then((doc) =>{
