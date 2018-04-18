@@ -29,7 +29,7 @@ MongoClient.connect(config.database, (err, client) => {
 	/* 
 	* Fetch All Data with Array 
 	*/
-	// db.collection('Users').find().toArray().then((count) => {
+	// db.collection('Users').find().toArray().then((docs) => {
 	// 	console.log('Users');
 	// 	console.log(JSON.stringify(docs, undefined, 2));
 	// }, (err) => {
@@ -37,9 +37,9 @@ MongoClient.connect(config.database, (err, client) => {
 	// });
 
 	/* 
-	* Fetch All Data with Array With Conditino
+	* Fetch All Data with Array With Condition
 	*/
-	// db.collection('Users').find({ _id: new ObjectID('5ad60647819ea46b84bc1d0e') }).toArray().then((count) => {
+	// db.collection('Users').find({ name: 'David') }).toArray().then((docs) => {
 	// 	console.log('Users');
 	// 	console.log(JSON.stringify(docs, undefined, 2));
 	// }, (err) => {
