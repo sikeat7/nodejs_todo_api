@@ -16,6 +16,17 @@ MongoClient.connect(config.database, (err, client) => {
 	const db = client.db(config.databaseName);
 
 	/* 
+	* Insert Data
+	*/
+	// db.collection('Users').insertOne({
+	// 	name: 'Sovath',
+	// 	age: 21,
+	// 	location: 'Phnom Penh'
+	// }).then((result) => {
+	// 	console.log(result);
+	// });
+
+	/* 
 	* Fetch All Data with Array 
 	*/
 	// db.collection('Users').find().toArray().then((count) => {
@@ -69,18 +80,19 @@ MongoClient.connect(config.database, (err, client) => {
 	/*
 	* Update User
 	*/
-	db.collection('Users').findOneAndUpdate({
-		name: 'Johny'
-	},{
-		$set: {
-			location: 'United State'
-		},
-		$inc: {
-			age: -3
-		}
-	}).then((result) => {
-		console.log(result);
-	});
+
+	// db.collection('Users').findOneAndUpdate({
+	// 	name: 'Johny'
+	// },{
+	// 	$set: {
+	// 		location: 'United State'
+	// 	},
+	// 	$inc: {
+	// 		age: -3
+	// 	}
+	// }).then((result) => {
+	// 	console.log(result);
+	// });
 
 	// client.close();
 });
