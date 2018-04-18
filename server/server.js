@@ -1,68 +1,28 @@
-// const express = require('express');
-// const mongodb = require('mongodb');
-var mongoose = require('mongoose');
+var express = require('express');
+var bodyParser = require('body-parser');
 
-mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost:27017/TodoApp');
+var {mongoose} = require('./db/mongoose');
+var {UserSchema} = require('./models/user');
+var {TodoSchema} = require('./models/todo');
+var {AddressBookSchema} = require('./models/addressbook');
 
-// var TodoSchema = mongoose.model('Todo', {
-// 	text:{
-// 		type: String,
-// 		required: true,
-// 		minlength: 1,
-// 		trim: true
-// 	},
-// 	completed:{
-// 		type: Boolean,
-// 		default: false,
-// 	},
-// 	completedAt:{
-// 		type: Number,
-// 		default: null
-// 	}
-// });
+var app = express();
 
-// var newTodo = new TodoSchema({
-// 	text: 'Something To do',
-// 	completed: true,
-// 	completedAt: 12
-// });
+// Middleware
+app.use(bodyParser.json());
 
-// newTodo.save().then((doc) => {
-// 	console.log('Saved todo', doc);
-// }, (e) => {
-// 	console.log('Unable to save Todo');
-// });
+app.post('/todos', (req, res) =>{
+	var todo = new TodoSchema({
+		text: req.body.text
+	});
 
-var AddressBookSchema = mongoose.model('AddressBook', {
-	name:{
-		type: String,
-		required: true,
-		minlength: 1,
-		trim: true
-	},
-	phone:{
-		type: String,
-		required: true,
-		minlength: 1,
-		trim: true
-	},
-	email:{
-		type: String,
-		required: true,
-		minlength: 1,
-		trim: true
-	}
+	todo.save().then((doc) =>{
+		res.send(doc)
+	}, (err) =>{
+		res.status(400).send(err);
+	});
 });
 
-var addressBook = new AddressBookSchema({
-	name: 'Sikeat',
-	phone: '+xxx xxx xxx',
-	email: 'demo@gmail.com'
-});
-
-addressBook.save().then((doc) =>{
-	console.log('Address Book saved', doc);
-}, (e) => {
-	console.log('Unable to save Address Book');
-});
+app.listen(3000, () => {
+	console.log('Server started on port 3000');
+})
