@@ -1,4 +1,5 @@
 var express = require('express');
+var _ = require('lodash');
 var bodyParser = require('body-parser');
 var {ObjectID} = require('mongodb');
 
@@ -43,9 +44,16 @@ app.get('/todos/:id', (req, res) => {
 	}
 
 	TodoSchema.findById(id).then((todo) => {
-		if(!todo){
+		
+		TodoSchema.findByIdAndRemove(id).then((todo) => {
+			if(!todo){
+				return res.status(404).send();
+			}
+			res.send(todo);
+		}, (e) => {
 			return res.status(404).send();
-		}
+		});
+
 		res.send({todo});
 	}).catch((e) => {
 		return res.status(404).send();
@@ -65,10 +73,51 @@ app.delete('/todos/:id', (req, res) => {
  	if(!todo){
  		return res.status(404).send();
  	}
+	
+	 TodoSchema.findByIdAndUpdate(id).then((todo) => {
+		if(!todo){
+			return res.status(404).send();
+		}
+		
+		res.send({todo})
+	 }, (e) => {
+		return res.status(404).send();
+	 });
 
+	res.send(todo);
  }).catch((e) => {
  	return res.status(400).send();
  });
+
+});
+
+
+// Update Request
+app.patch('/todos/:id', (req, res) => {
+	var id = req.params.id;
+	var body = _.pick(req.body, ['text', 'completed']);
+
+	 // valid the id -> not valid? return 404
+	if(!ObjectID.isValid(id)){
+		return res.status(404).send();
+	}
+
+	if(_.isBoolean(body.completed) && body.completed){
+		body.completedAt = new Date().getTime();
+	}else{
+		body.completed = false;
+		body.completedAt = null;
+	}
+
+	TodoSchema.findByIdAndUpdate(id, {$set: body}, {new: true}).then((todo) => {
+		if(!todo){
+			return res.status(404).send();
+		}
+
+		res.send({todo});
+	}).catch((e) => {
+		return res.status(400).send(e);
+	});
 
 });
 
