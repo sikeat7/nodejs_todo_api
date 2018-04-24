@@ -11,7 +11,7 @@ var {AddressBookSchema} = require('./models/addressbook');
 var app = express();
 const port = process.env.PORT || 3000;
 
-// Middlewares
+// Middleware
 app.use(bodyParser.json());
 
 app.post('/todos', (req, res) =>{
