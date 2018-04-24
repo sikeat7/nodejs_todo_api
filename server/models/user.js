@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const mongoose = require('mongoose');
 const validator = require('validator');
 const jwt = require('jsonwebtoken');
@@ -22,11 +23,11 @@ var UserSchema = new mongoose.Schema({
 	tokens: [{
 		access: {
 			type: String,
-			required: true
+			default: null
 		},
 		token: {
 			type: String,
-			required: true
+			default: null
 		}
 	}]
 });
@@ -44,7 +45,6 @@ UserSchema.methods.generateAuthToken = function(){
 	var token = jwt.sign({_id: user._id.toHexString(), access}, 'abc@123').toString();
 
 	user.tokes.push({access, token});
-
 	return user.save().then(() => {
 		return token;
 	});
