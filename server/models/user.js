@@ -1,15 +1,7 @@
-// const _ = require('lodash');
-// const mongoose = require('mongoose');
-// mongoose.Promise = require('bluebird');
-// const validator = require('validator');
-// const jwt = require('jsonwebtoken');
-
+const _ = require('lodash');
 const mongoose = require('mongoose');
 const validator = require('validator');
-const Schema = mongoose.Schema;
 const jwt = require('jsonwebtoken');
-const _ = require('lodash');
-const bcrypt = require('bcryptjs');
 
 var UserSchema = new mongoose.Schema({
 	email:{
@@ -47,12 +39,12 @@ UserSchema.methods.toJSON = function(){
 	return _.pick(userObject, ['_id', 'email']);
 }
 
-UserSchema.methods.generateAuthToken = function(){
+UserSchema.methods.generateAuthToken = function() {
 	var user = this;
 	var access = 'auth';
 	var token = jwt.sign({_id: user._id.toHexString(), access}, 'abc@123').toString();
 
-	user.tokes.push({access, token});
+	user.tokens.push({ access, token });
 	return user.save().then(() => {
 		return token;
 	});
