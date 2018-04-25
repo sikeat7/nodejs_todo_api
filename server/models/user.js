@@ -1,7 +1,15 @@
-const _ = require('lodash');
+// const _ = require('lodash');
+// const mongoose = require('mongoose');
+// mongoose.Promise = require('bluebird');
+// const validator = require('validator');
+// const jwt = require('jsonwebtoken');
+
 const mongoose = require('mongoose');
 const validator = require('validator');
+const Schema = mongoose.Schema;
 const jwt = require('jsonwebtoken');
+const _ = require('lodash');
+const bcrypt = require('bcryptjs');
 
 var UserSchema = new mongoose.Schema({
 	email:{
@@ -23,11 +31,11 @@ var UserSchema = new mongoose.Schema({
 	tokens: [{
 		access: {
 			type: String,
-			default: null
+			required: true
 		},
 		token: {
 			type: String,
-			default: null
+			required: true
 		}
 	}]
 });
