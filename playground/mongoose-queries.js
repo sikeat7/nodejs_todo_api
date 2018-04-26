@@ -1,26 +1,26 @@
 const {ObjectID} = require('mongoose');
 
 const {mongoose} = require('./../server/db/mongoose');
-const {TodoSchema} = require('./../server/models/todo');
+const {Todo} = require('./../server/models/todo');
 const {User} = require('./../server/models/user');
 
 console.log(JSON.stringify(User));
 
 var todo_id = '5ad77057cf01cc6be4db4839';
 
-TodoSchema.find({
+Todo.find({
 	_id: todo_id
 }).then((todos) => {
 	console.log('Todos', todos);
 });
 
-TodoSchema.findOne({
+Todo.findOne({
 	_id: todo_id
 }).then((todo) => {
 	console.log('Todo', todo);
 });
 
-TodoSchema.findById(todo_id).then((todo)=>{
+Todo.findById(todo_id).then((todo)=>{
 	if(!todo){
 		return console.log('ID not found!');
 	}

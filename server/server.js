@@ -13,7 +13,7 @@ var {
 	User
 } = require('./models/user');
 var {
-	TodoSchema
+	Todo
 } = require('./models/todo');
 var {
 	AddressBookSchema
@@ -32,9 +32,10 @@ app.use(bodyParser.json());
 // use morgan to log requests to the console
 app.use(morgan('dev'));
 
-app.post('/todos', (req, res) => {
-	var todo = new TodoSchema({
-		text: req.body.text
+app.post('/todos', authenticate, (req, res) => {
+	var todo = new Todo({
+		text: req.body.text,
+		_creator: req.user._id
 	});
 
 	todo.save().then((doc) => {
@@ -44,8 +45,10 @@ app.post('/todos', (req, res) => {
 	});
 });
 
-app.get('/todos', (req, res) => {
-	TodoSchema.find().then((todos) => {
+app.get('/todos', authenticate, (req, res) => {
+	Todo.find({
+		_creator: req.user._id
+	}).then((todos) => {
 		res.send({
 			todos
 		});
@@ -63,9 +66,9 @@ app.get('/todos/:id', (req, res) => {
 		return res.status(404).send();
 	}
 
-	TodoSchema.findById(id).then((todo) => {
+	Todo.findById(id).then((todo) => {
 
-		TodoSchema.findByIdAndRemove(id).then((todo) => {
+		Todo.findByIdAndRemove(id).then((todo) => {
 			if (!todo) {
 				return res.status(404).send();
 			}
@@ -91,12 +94,12 @@ app.delete('/todos/:id', (req, res) => {
 		return res.status(404).send();
 	}
 
-	TodoSchema.findByIdAndRemove(id).then((todo) => {
+	Todo.findByIdAndRemove(id).then((todo) => {
 		if (!todo) {
 			return res.status(404).send();
 		}
 
-		TodoSchema.findByIdAndUpdate(id).then((todo) => {
+		Todo.findByIdAndUpdate(id).then((todo) => {
 			if (!todo) {
 				return res.status(404).send();
 			}
@@ -132,7 +135,7 @@ app.patch('/todos/:id', (req, res) => {
 		body.completedAt = null;
 	}
 
-	TodoSchema.findByIdAndUpdate(id, {
+	Todo.findByIdAndUpdate(id, {
 		$set: body
 	}, {
 		new: true
